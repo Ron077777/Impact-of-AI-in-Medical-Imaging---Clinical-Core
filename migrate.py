@@ -1,0 +1,11 @@
+﻿import psycopg2
+conn = psycopg2.connect(host="127.0.0.1", port=5432, dbname="clinical_core", user="postgres", password="admin")
+cur = conn.cursor()
+cur.execute("""ALTER TABLE scans ADD COLUMN IF NOT EXISTS patient_id VARCHAR(128) NOT NULL DEFAULT 'unknown'""")
+cur.execute("""ALTER TABLE scans ADD COLUMN IF NOT EXISTS anomaly_count INTEGER NOT NULL DEFAULT 0""")
+cur.execute("""ALTER TABLE scans ADD COLUMN IF NOT EXISTS findings TEXT NOT NULL DEFAULT ''""")
+cur.execute("""ALTER TABLE scans ADD COLUMN IF NOT EXISTS pdf_path VARCHAR(1024) NOT NULL DEFAULT ''""")
+conn.commit()
+cur.close()
+conn.close()
+print('Schema updated OK')
